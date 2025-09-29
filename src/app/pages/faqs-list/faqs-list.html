@@ -1,0 +1,9 @@
+<section class="container">
+  <h1>FAQs</h1>
+  <article *ngFor="let f of items">
+    <h3>Q: {{ f.question }}</h3>
+    <p>A: {{ f.answer }}</p>
+    <hr />
+  </article>
+  <p *ngIf="!items.length">No hay FAQs.</p>
+</section>
