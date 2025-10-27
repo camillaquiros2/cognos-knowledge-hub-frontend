@@ -14,7 +14,11 @@ export interface Article {
   module_id?: number | null;
   module?: string | null;
 }
-export interface Tag { id: number; name: string; }
+
+export interface Tag {
+  id: number;
+  name: string;
+}
 
 export interface CreateArticleDto {
   title: string;
@@ -29,24 +33,32 @@ export interface CreateArticleDto {
 @Injectable({ providedIn: 'root' })
 export class ArticleService {
   private http = inject(HttpClient);
-  private base = '/api';
 
+  // 🔹 URL del backend corregida
+  private base = 'http://localhost:3000/api';
+
+  // ---------- Artículos ----------
   list(): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.base}/articles`);
   }
+
   get(id: number): Observable<Article> {
     return this.http.get<Article>(`${this.base}/articles/${id}`);
   }
+
   create(body: CreateArticleDto): Observable<Article> {
     return this.http.post<Article>(`${this.base}/articles`, body);
   }
+
   update(id: number, body: Partial<CreateArticleDto>): Observable<Article> {
     return this.http.put<Article>(`${this.base}/articles/${id}`, body);
   }
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/articles/${id}`);
   }
 
+  // ---------- Tags ----------
   getTags(id: number): Observable<Tag[]> {
     return this.http.get<Tag[]>(`${this.base}/articles/${id}/tags`);
   }

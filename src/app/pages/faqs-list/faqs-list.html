@@ -1,9 +1,24 @@
-<section class="container">
-  <h1>FAQs</h1>
-  <article *ngFor="let f of items">
-    <h3>Q: {{ f.question }}</h3>
-    <p>A: {{ f.answer }}</p>
-    <hr />
-  </article>
-  <p *ngIf="!items.length">No hay FAQs.</p>
+<section class="faqs-container">
+  <header class="faqs-header">
+    <a class="back-link" (click)="goBack()">← Back</a>
+    <h1>FAQs</h1>
+    <p class="subtitle" *ngIf="items.length">
+      {{ items.length }} pregunta{{ items.length > 1 ? 's' : '' }}
+      frecuente{{ items.length > 1 ? 's' : '' }}
+    </p>
+  </header>
+
+  <div class="faqs-list" *ngIf="items.length; else empty">
+    <article class="faq-card" *ngFor="let f of items">
+      <div class="faq-question">
+        <span class="icon">❓</span>
+        <h3>{{ f.question }}</h3>
+      </div>
+      <p class="faq-answer">{{ f.answer }}</p>
+    </article>
+  </div>
+
+  <ng-template #empty>
+    <p class="no-faqs">No hay FAQs relacionadas con este artículo.</p>
+  </ng-template>
 </section>

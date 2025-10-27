@@ -1,6 +1,13 @@
-<nav style="padding:1rem">
-  <a routerLink="/articles">Artículos</a> |
-  <a routerLink="/articles/new">Crear</a> |
-  <a routerLink="/faqs">FAQs</a>
-</nav>
-<router-outlet></router-outlet>
+<header class="app-header">
+  <a routerLink="/" class="logo-link">
+    <img src="/assets/ibm-logo.png" alt="IBM Logo" class="ibm-logo" />
+  </a>
+</header>
+
+<main class="app-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="app-footer">
+  <p>© 2025 Cognos Knowledge Hub · Built with IBM Cognos Analytics</p>
+</footer>

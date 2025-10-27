@@ -1,0 +1,39 @@
+<div class="articles-container">
+  <header class="articles-header">
+    <img src="assets/ibm-logo.png" alt="IBM Logo" class="ibm-logo" />
+    <h1>Cognos Knowledge Hub</h1>
+    <p class="subtitle">Centralized technical knowledge base for IBM Cognos Analytics</p>
+    
+  </header>
+
+  
+
+  <section class="search-box">
+    <input
+      type="text"
+      placeholder="🔍 Search articles..."
+      [(ngModel)]="filterText"
+      (input)="filterArticles()"
+    />
+  </section>
+  
+<!-- 🔙 Botón para volver -->
+  <div class="back-btn">
+    <a routerLink="/articles-search">← Back to Home</a>
+  </div>
+  <section class="articles-list">
+    <div *ngFor="let article of filteredArticles" class="article-card">
+      <h2>
+        <a [routerLink]="['/articles', article.id]">{{ article.title }}</a>
+      </h2>
+      <p class="summary">{{ article.summary }}</p>
+
+      <div class="meta">
+        <span class="tag version" *ngIf="article.version">Version: {{ article.version }}</span>
+        <span class="tag category" *ngIf="article.category">Category: {{ article.category }}</span>
+      </div>
+    </div>
+
+    <p *ngIf="!filteredArticles.length" class="no-results">No articles found.</p>
+  </section>
+</div>

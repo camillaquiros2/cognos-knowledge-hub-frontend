@@ -13,10 +13,15 @@ export interface Faq {
 @Injectable({ providedIn: 'root' })
 export class FaqService {
   private http = inject(HttpClient);
+  private base = 'http://localhost:3000/api';
+
   listAll(): Observable<Faq[]> {
-    return this.http.get<Faq[]>('/api/faqs');
+    return this.http.get<Faq[]>(`${this.base}/faqs`);
   }
+
   listByArticle(articleId: number): Observable<Faq[]> {
-    return this.http.get<Faq[]>(`/api/faqs`, { params: { article_id: articleId } as any });
+    return this.http.get<Faq[]>(`${this.base}/faqs`, {
+      params: { article_id: articleId } as any,
+    });
   }
 }

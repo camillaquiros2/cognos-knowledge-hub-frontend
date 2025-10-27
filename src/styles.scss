@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ibm-logo {
+  height: 40px;
+  width: auto;
+  filter: brightness(0);
+  transition: opacity 0.2s ease-in-out;
+}
+
+.ibm-logo:hover {
+  opacity: 0.8;
+}
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* logo alineado a la izquierda */
+  background: #ffffff;
+  padding: 0.8rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.ibm-logo {
+  height: 36px;
+  width: auto;
+  filter: none; /* muestra el color original */
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.ibm-logo:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}

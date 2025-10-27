@@ -1,0 +1,42 @@
+<section class="detail-container" *ngIf="!loading && item">
+  <!-- Header: Back + Export -->
+  <div class="header">
+    <a routerLink="/articles" class="back-btn">← Back</a>
+    <button (click)="exportToPDF()" class="pdf-btn">📄 Export to PDF</button>
+  </div>
+
+  <!-- Main article content -->
+  <article class="article-card">
+    <h1 class="title">{{ item.title }}</h1>
+
+    <div class="meta">
+      <span *ngIf="item.version"><strong>Version:</strong> {{ item.version }}</span>
+      <span *ngIf="item.category"> · <strong>Category:</strong> {{ item.category }}</span>
+      <span *ngIf="item.module"> · <strong>Module:</strong> {{ item.module }}</span>
+    </div>
+
+    <p class="summary">{{ item.summary }}</p>
+
+    <a [href]="item.source_url" target="_blank" class="source-link">
+    View original source
+    </a>
+
+    <div *ngIf="tags?.length" class="tags">
+      <strong>Tags:</strong>
+      <div class="tag-list">
+        <span *ngFor="let t of tags">{{ t.name }}</span>
+      </div>
+    </div>
+
+    <div class="faqs-link">
+      <a [routerLink]="['/faqs']" [queryParams]="{ article_id: item.id }">
+     View FAQs related to this article
+      </a>
+    </div>
+  </article>
+
+  <!-- ✅ Toast notification -->
+  <div *ngIf="showToast" class="toast">✅ File saved successfully</div>
+
+<!-- Loader -->
+<section *ngIf="loading" class="loading">Loading article...</section>

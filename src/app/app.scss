@@ -1,0 +1,49 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---------- HEADER ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  .logo-link {
+    display: inline-flex;
+    align-items: center;
+
+    .ibm-logo {
+      height: 32px;
+      width: auto;
+    }
+  }
+}
+
+/* ---------- CONTENIDO ---------- */
+.app-content {
+  flex: 1; /* esto hace que el contenido tome el espacio restante */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ---------- FOOTER ---------- */
+.app-footer {
+  background-color: #0f62fe; // IBM Blue
+  color: #ffffff;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+
+  p {
+    margin: 0;
+  }
+}
