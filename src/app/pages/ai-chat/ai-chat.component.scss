@@ -11,9 +11,10 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden; /* el scroll vive solo en messages-box */
+  min-height: 0;    /* clave para que no reviente el layout */
 }
 
-/* Título dentro del chat (si lo usas aquí) */
+/* Título dentro del chat */
 .title {
   text-align: center;
   color: #0f62fe;
@@ -28,11 +29,11 @@
   background: #f7f7f7;
   border-radius: 15px;
   padding: 15px;
-  overflow-y: auto;       /* 🔥 Aquí está el scroll */
+  overflow-y: auto;      /* scroll aquí */
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 0;          /* 🔥 Clave para que no empuje el input */
+  min-height: 0;         /* que no empuje el input */
 }
 
 /* Burbujas */
@@ -71,7 +72,7 @@
   display: flex;
   gap: 10px;
   margin-top: 15px;
-  flex-shrink: 0;          /* 🔥 Nunca desaparece aunque haya mil mensajes */
+  flex-shrink: 0;  /* se queda fijo abajo */
 }
 
 .input-area input {

@@ -29,8 +29,9 @@
   right: 25px;
   width: 420px;
 
-  /* 🔥 Nunca más grande que la pantalla */
-  max-height: calc(100vh - 140px);
+  /* 🔥 AHORA SÍ TIENE ALTURA FIJA */
+  height: 70vh;
+  max-height: 70vh;
 
   background: #ffffff;
   border-radius: 20px;
@@ -42,7 +43,7 @@
   overflow: hidden; /* el scroll lo maneja el chat interno */
 }
 
-/* Botón de cerrar del widget (el de la esquina) */
+/* Botón de cerrar del widget */
 .close-btn {
   background: transparent;
   border: none;
@@ -52,7 +53,7 @@
   align-self: flex-end;
 }
 
-/* Título del panel (si lo tienes aquí, si no, no pasa nada) */
+/* (si usas title aquí) */
 .title {
   text-align: center;
   color: #0f62fe;
@@ -65,6 +66,7 @@
 .ai-panel app-ai-chat {
   flex: 1;
   display: block;
+  min-height: 0; /* clave para que el flex interno funcione */
 }
 
 /* ========== Responsive ========== */
@@ -73,7 +75,8 @@
     width: 92vw;
     right: 4vw;
     bottom: 90px;
-    max-height: calc(100vh - 120px);
+    height: 70vh;
+    max-height: 70vh;
   }
 }
 

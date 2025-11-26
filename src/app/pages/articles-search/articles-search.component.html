@@ -1,18 +1,40 @@
-<section class="container search-container">
-  <h1 class="main-title">Cognos Knowledge Hub</h1>
-  <p class="subtitle">Centralized technical knowledge base for IBM Cognos Analytics</p>
+<section class="hero-section">
+  <section class="hero-section">
+  <img src="assets/cqt-logo.png" alt="CQT Logo" class="hero-logo" />
 
+  <h1 class="hero-title">Cami's Knowledge Hub</h1>
+  <p class="hero-subtitle">
+    Centralized technical knowledge base for Cami's Analytics
+  </p>
+</section>
+
+
+
+<section class="container search-container">
   <form (submit)="search(); $event.preventDefault()" class="filters">
-    <div class="filter">
+
+    <!-- KEYWORD -->
+    <div class="filter keyword-filter">
       <label for="keyword">Keyword</label>
       <input
         id="keyword"
         [(ngModel)]="keyword"
         name="keyword"
+        autocomplete="off"
         placeholder="Search by title or error code..."
+        (input)="onKeywordInput(keyword)"
+        (blur)="closeSuggestions()"
+        (keydown.escape)="closeSuggestions()"
       />
+
+      <ul class="autocomplete-list" *ngIf="showSuggestions">
+        <li *ngFor="let item of suggestions" (mousedown)="selectSuggestion(item)">
+          {{ item }}
+        </li>
+      </ul>
     </div>
 
+    <!-- VERSION -->
     <div class="filter">
       <label for="version">Version</label>
       <select id="version" [(ngModel)]="version" name="version">
@@ -21,6 +43,7 @@
       </select>
     </div>
 
+    <!-- CATEGORY -->
     <div class="filter">
       <label for="category">Category</label>
       <select id="category" [(ngModel)]="category" name="category">
@@ -29,6 +52,7 @@
       </select>
     </div>
 
+    <!-- MODULE -->
     <div class="filter">
       <label for="module">Module</label>
       <select id="module" [(ngModel)]="module" name="module">
@@ -37,35 +61,36 @@
       </select>
     </div>
 
+    <!-- BUTTONS -->
     <div class="actions">
       <button type="submit">Search</button>
       <button type="button" class="secondary" (click)="clearFilters()">Clear</button>
     </div>
+
   </form>
 
-  <!-- Loader -->
+  <!-- Results / Loading / Empty -->
   <section *ngIf="loading" class="loading">Loading results...</section>
 
-  <!-- Results -->
   <section *ngIf="!loading && results.length" class="results">
     <article *ngFor="let a of results" class="card">
       <h3>{{ a.title }}</h3>
       <p>{{ a.summary }}</p>
+
       <p class="meta">
         <span *ngIf="a.version">Version: {{ a.version }}</span>
         <span *ngIf="a.category"> · Category: {{ a.category }}</span>
         <span *ngIf="a.module"> · Module: {{ a.module }}</span>
       </p>
+
       <a [href]="a.source_url" target="_blank">View source</a>
     </article>
   </section>
 
-  <!-- Empty message (only after searching) -->
   <p *ngIf="hasSearched && !loading && !results.length" class="empty">
     No results found for the selected filters.
   </p>
 
-  <!-- View all articles button -->
   <div class="view-all">
     <a routerLink="/articles" class="view-all-btn">📚 View all articles</a>
   </div>
