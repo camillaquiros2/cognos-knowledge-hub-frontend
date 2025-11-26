@@ -1,5 +1,4 @@
 <section class="hero-section">
-  <section class="hero-section">
   <img src="assets/cqt-logo.png" alt="CQT Logo" class="hero-logo" />
 
   <h1 class="hero-title">Cami's Knowledge Hub</h1>
@@ -8,9 +7,7 @@
   </p>
 </section>
 
-
-
-<section class="container search-container">
+<section class="search-container">
   <form (submit)="search(); $event.preventDefault()" class="filters">
 
     <!-- KEYWORD -->
@@ -38,8 +35,8 @@
     <div class="filter">
       <label for="version">Version</label>
       <select id="version" [(ngModel)]="version" name="version">
-        <option value="">All</option>
-        <option *ngFor="let v of versions" [value]="v">{{ v }}</option>
+        <option value="All">All</option>
+        <option *ngFor="let v of versions" [value]="v.label">{{ v.label }}</option>
       </select>
     </div>
 
@@ -47,8 +44,8 @@
     <div class="filter">
       <label for="category">Category</label>
       <select id="category" [(ngModel)]="category" name="category">
-        <option value="">All</option>
-        <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+        <option value="All">All</option>
+        <option *ngFor="let c of categories" [value]="c.name">{{ c.name }}</option>
       </select>
     </div>
 
@@ -56,8 +53,8 @@
     <div class="filter">
       <label for="module">Module</label>
       <select id="module" [(ngModel)]="module" name="module">
-        <option value="">All</option>
-        <option *ngFor="let m of modules" [value]="m">{{ m }}</option>
+        <option value="All">All</option>
+        <option *ngFor="let m of modules" [value]="m.name">{{ m.name }}</option>
       </select>
     </div>
 
@@ -69,9 +66,10 @@
 
   </form>
 
-  <!-- Results / Loading / Empty -->
+  <!-- LOADING -->
   <section *ngIf="loading" class="loading">Loading results...</section>
 
+  <!-- RESULTS -->
   <section *ngIf="!loading && results.length" class="results">
     <article *ngFor="let a of results" class="card">
       <h3>{{ a.title }}</h3>
@@ -87,10 +85,12 @@
     </article>
   </section>
 
+  <!-- EMPTY -->
   <p *ngIf="hasSearched && !loading && !results.length" class="empty">
     No results found for the selected filters.
   </p>
 
+  <!-- VIEW ALL -->
   <div class="view-all">
     <a routerLink="/articles" class="view-all-btn">📚 View all articles</a>
   </div>

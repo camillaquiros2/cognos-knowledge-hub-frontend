@@ -13,6 +13,7 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./article-detail.component.scss']
 })
 export class ArticleDetailComponent {
+
   private api = inject(ArticleService);
   private route = inject(ActivatedRoute);
 
@@ -24,11 +25,27 @@ export class ArticleDetailComponent {
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.api.get(id).subscribe((data) => {
-      this.item = data;
-      this.loading = false;
+
+    // Cargar artículo
+    this.api.get(id).subscribe({
+      next: (data) => {
+        this.item = data;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
     });
-    this.api.getTags(id).subscribe((ts) => (this.tags = ts));
+
+    // Cargar tags
+    this.api.getTags(id).subscribe({
+      next: (ts) => {
+        this.tags = ts;
+      },
+      error: () => {
+        this.tags = [];
+      }
+    });
   }
 
   async exportToPDF() {
@@ -36,6 +53,7 @@ export class ArticleDetailComponent {
     if (!content) return;
 
     const pdf = new jsPDF('p', 'mm', 'a4');
+
     const canvas = await html2canvas(content, {
       scale: 2,
       useCORS: true,
@@ -44,13 +62,14 @@ export class ArticleDetailComponent {
 
     const imgData = canvas.toDataURL('image/png');
     const imgProps = pdf.getImageProperties(imgData);
+
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
     pdf.save(`${this.item?.title || 'article'}.pdf`);
 
-    // ✅ Mostrar notificación de confirmación
+    // Mostrar toast
     this.showToast = true;
     setTimeout(() => (this.showToast = false), 2500);
   }

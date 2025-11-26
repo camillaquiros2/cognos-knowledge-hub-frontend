@@ -1,48 +1,43 @@
 /* ---------------------------------------------------------
-   🟦 HERO SECTION · Logo + título estilo Google
+   🟦 HERO SECTION
 ----------------------------------------------------------*/
 
 .hero-section {
   max-width: 900px;
-  margin: 1.2rem auto 0.8rem; /* ⬅️ Mucho más compacto */
+  margin: 1.2rem auto 0.8rem;
   text-align: center;
   padding: 0 1rem;
 }
 
-/* Logo */
 .hero-logo {
   height: 150px;
   width: auto;
   display: block;
-  margin: 0 auto 0.5rem; /* ⬅️ Antes era 1.2rem → reducido */
+  margin: 0 auto 0.5rem;
   object-fit: contain;
   animation: fadeIn 0.4s ease-out;
 }
 
-/* Título */
 .hero-title {
   font-size: 2.8rem;
   font-weight: 700;
-  margin: 0.2rem 0 0.3rem; /* ⬅️ Reduce aún más la separación */
+  margin: 0.2rem 0 0.3rem;
 }
 
-/* Subtítulo */
 .hero-subtitle {
   font-size: 1.15rem;
   color: #6b7280;
-  margin: 0.2rem 0 1.5rem; /* ⬅️ Compacto */
+  margin: 0.2rem 0 1.5rem;
 }
 
-/* Fade in */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 
-
 /* ---------------------------------------------------------
-   🟦 SEARCH CONTAINER
+   🟦 SEARCH CONTAINER (centrado correctamente)
 ----------------------------------------------------------*/
 
 .search-container {
@@ -52,16 +47,14 @@
   font-family: 'Segoe UI', Roboto, sans-serif;
   color: #1a1a1a;
 
-  /* ---------- Título principal ---------- */
   .main-title {
     text-align: center;
-    font-size: 3rem; /* más premium */
+    font-size: 3rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: #1a1a1a;
   }
 
-  /* ---------- Subtítulo ---------- */
   .subtitle {
     text-align: center;
     font-size: 1.2rem;
@@ -69,12 +62,9 @@
     margin-bottom: 2.5rem;
   }
 
-  /* -----------------------------------------------------
-     🟦 FILTER GRID
-  ------------------------------------------------------*/
   .filters {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* ❤️ CORREGIDO */
     gap: 1rem;
     background: #f9fafb;
     padding: 1.5rem;
@@ -113,9 +103,8 @@
         }
       }
 
-      /* ---------- AUTOCOMPLETE LIST ---------- */
       .autocomplete-list {
-        list-style: none; /* quita bullets */
+        list-style: none;
         padding-left: 0;
         margin: 0;
 
@@ -153,11 +142,10 @@
       }
     }
 
-    /* -----------------------------------------------------
-       🟦 BOTONES (Search / Clear)
-    ------------------------------------------------------*/
     .actions {
+      grid-column: span 4; /* ❤️ CORREGIDO — ahora está dentro del cuadro */
       display: flex;
+      justify-content: flex-end;
       gap: 0.8rem;
 
       button {
@@ -188,7 +176,6 @@
     }
   }
 
-  /* ---------- LOADING ---------- */
   .loading {
     text-align: center;
     color: #666;
@@ -196,9 +183,6 @@
     margin-top: 1rem;
   }
 
-  /* -----------------------------------------------------
-     🟦 RESULT CARDS
-  ------------------------------------------------------*/
   .results {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -218,7 +202,6 @@
     }
   }
 
-  /* ---------- EMPTY ---------- */
   .empty {
     text-align: center;
     margin-top: 2.5rem;
@@ -280,6 +263,7 @@
     grid-template-columns: 1fr !important;
 
     .actions {
+      grid-column: span 1;
       justify-content: center;
     }
   }

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Article {
@@ -9,15 +9,11 @@ export interface Article {
   source_url: string;
   updated_at?: string;
   version?: string | null;
-  category_id?: number | null;
   category?: string | null;
-  module_id?: number | null;
   module?: string | null;
-}
-
-export interface Tag {
-  id: number;
-  name: string;
+  category_id?: number | null;
+  module_id?: number | null;
+  version_id?: number | null;
 }
 
 export interface CreateArticleDto {
@@ -25,19 +21,40 @@ export interface CreateArticleDto {
   summary: string;
   source_url: string;
   version_id?: number | null;
-  status?: 'draft' | 'published';
   category_id?: number | null;
   module_id?: number | null;
+  status?: 'draft' | 'published';
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+}
+
+export interface Version {
+  id: number;
+  label: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  description?: string;
+}
+
+export interface ModuleItem {
+  id: number;
+  name: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ArticleService {
   private http = inject(HttpClient);
-
-  // 🔹 URL del backend corregida
   private base = 'http://localhost:3000/api';
 
-  // ---------- Artículos ----------
+  /* -------------------------------------------------------
+     📌 CRUD BÁSICO
+     ------------------------------------------------------- */
   list(): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.base}/articles`);
   }
@@ -58,8 +75,61 @@ export class ArticleService {
     return this.http.delete<void>(`${this.base}/articles/${id}`);
   }
 
-  // ---------- Tags ----------
-  getTags(id: number): Observable<Tag[]> {
-    return this.http.get<Tag[]>(`${this.base}/articles/${id}/tags`);
+  /* -------------------------------------------------------
+     ⭐ TAGS (para article-detail)
+     ------------------------------------------------------- */
+  getTags(articleId: number): Observable<Tag[]> {
+    return this.http.get<Tag[]>(`${this.base}/articles/${articleId}/tags`);
+  }
+
+  /* -------------------------------------------------------
+     🔎 SEARCH REAL (CORREGIDO)
+     ------------------------------------------------------- */
+  searchArticles(filters: {
+    keyword: string;
+    version: string;
+    category: string;
+    module: string;
+  }): Observable<Article[]> {
+    
+    let params = new HttpParams();
+
+    // Keyword
+    if (filters.keyword?.trim()) {
+      params = params.set('keyword', filters.keyword.trim());
+    }
+
+    // Version
+    if (filters.version && filters.version !== 'All') {
+      params = params.set('version', filters.version);
+    }
+
+    // Category
+    if (filters.category && filters.category !== 'All') {
+      params = params.set('category', filters.category);
+    }
+
+    // Module
+    if (filters.module && filters.module !== 'All') {
+      params = params.set('module', filters.module);
+    }
+
+    return this.http.get<Article[]>(`${this.base}/articles/search`, { params });
+  }
+
+  /* -------------------------------------------------------
+     ⭐ NUEVO: filtros dinámicos (usa tu backend real)
+     ------------------------------------------------------- */
+
+  getVersions(): Observable<Version[]> {
+    return this.http.get<Version[]>(`${this.base}/versions`);
+  }
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.base}/categories`);
+  }
+
+  getModules(): Observable<ModuleItem[]> {
+    return this.http.get<ModuleItem[]>(`${this.base}/modules`);
   }
 }

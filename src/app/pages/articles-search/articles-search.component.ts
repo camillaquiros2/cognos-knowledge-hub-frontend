@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ArticleService, Article } from '../../core/services/article.service';
+import { ArticleService, Article, Category, ModuleItem, Version } from '../../core/services/article.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -17,17 +17,21 @@ export class ArticlesSearchComponent {
   private api = inject(ArticleService);
   private http = inject(HttpClient);
 
-  // ---------------- FILTROS ----------------
+  /* ----------------------------------------
+     FILTROS
+  ---------------------------------------- */
   keyword = '';
-  version = '';
-  category = '';
-  module = '';
+  version = 'All';
+  category = 'All';
+  module = 'All';
 
   results: Article[] = [];
   loading = false;
   hasSearched = false;
 
-  // ---------------- AUTOCOMPLETE ----------------
+  /* ----------------------------------------
+     AUTOCOMPLETE
+  ---------------------------------------- */
   suggestions: string[] = [];
   showSuggestions = false;
   debounceTimer: any;
@@ -41,14 +45,13 @@ export class ArticlesSearchComponent {
       return;
     }
 
-    // Debounce de 250ms
     this.debounceTimer = setTimeout(() => {
       this.http
         .get<string[]>(`http://localhost:3000/api/suggestions?q=${value}`)
         .subscribe({
-          next: (s) => {
-            this.suggestions = s;
-            this.showSuggestions = s.length > 0;
+          next: (list) => {
+            this.suggestions = list;
+            this.showSuggestions = list.length > 0;
           },
           error: () => {
             this.suggestions = [];
@@ -58,100 +61,64 @@ export class ArticlesSearchComponent {
     }, 250);
   }
 
-  selectSuggestion(s: string) {
-    this.keyword = s;
+  selectSuggestion(value: string) {
+    this.keyword = value;
     this.showSuggestions = false;
   }
 
   closeSuggestions() {
-    setTimeout(() => {
-      this.showSuggestions = false;
-    }, 150);
+    setTimeout(() => (this.showSuggestions = false), 150);
   }
 
-  // ---------------- STATIC FILTERS ----------------
-  categories = [
-    'Installation',
-    'Errors',
-    'Compatibility',
-    'Windows',
-    'Linux',
-    'Configuration',
-    'Performance'
-  ];
+  /* ----------------------------------------
+     🔥 FILTROS DINÁMICOS DESDE EL BACKEND
+  ---------------------------------------- */
 
-  versions = ['11.2.4', '12.0.1', '12.1.0 IF2'];
+  categories: Category[] = [];
+  versions: Version[] = [];
+  modules: ModuleItem[] = [];
 
-  modules = ['Server', 'Analytics', 'Admin'];
+  ngOnInit() {
+    this.api.getCategories().subscribe((c) => (this.categories = c));
+    this.api.getVersions().subscribe((v) => (this.versions = v));
+    this.api.getModules().subscribe((m) => (this.modules = m));
+  }
 
-  private categoryMap: Record<string, string> = {
-    installation: 'instalación',
-    errors: 'errores',
-    compatibility: 'compatibilidad'
-  };
-
-  // ---------------- SEARCH ----------------
+  /* ----------------------------------------
+     SEARCH REAL
+  ---------------------------------------- */
   search() {
     this.loading = true;
     this.hasSearched = true;
     this.showSuggestions = false;
 
-    this.api.list().subscribe({
-      next: (all) => {
-        const term = this.keyword.toLowerCase().trim();
-        const version = this.version.toLowerCase().trim();
-        const selectedCategory = this.category.toLowerCase().trim();
-        const selectedModule = this.module.toLowerCase().trim();
+    const filters = {
+      keyword: this.keyword.trim(),
+      version: this.version !== 'All' ? this.version : '',
+      category: this.category !== 'All' ? this.category : '',
+      module: this.module !== 'All' ? this.module : ''
+    };
 
-        const categoryTranslated =
-          this.categoryMap[selectedCategory] || selectedCategory;
-
-        this.results = all.filter((a) => {
-          const title = (a.title || '').toLowerCase();
-          const summary = (a.summary || '').toLowerCase();
-          const v = (a.version || '').toLowerCase();
-          const c = (a.category || '')
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '');
-          const m = (a.module || '').toLowerCase();
-
-          const matchesKeyword =
-            !term || title.includes(term) || summary.includes(term);
-
-          const matchesVersion = !version || v.includes(version);
-
-          const matchesCategory =
-            !categoryTranslated ||
-            c.includes(
-              categoryTranslated.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            );
-
-          const matchesModule = !selectedModule || m.includes(selectedModule);
-
-          return (
-            matchesKeyword &&
-            matchesVersion &&
-            matchesCategory &&
-            matchesModule
-          );
-        });
-
+    this.api.searchArticles(filters).subscribe({
+      next: (list) => {
+        this.results = list;
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error fetching articles', err);
+        console.error('Search error:', err);
         this.loading = false;
       }
     });
   }
 
-  // ---------------- CLEAR ----------------
+  /* ----------------------------------------
+     CLEAR
+  ---------------------------------------- */
   clearFilters() {
     this.keyword = '';
-    this.version = '';
-    this.category = '';
-    this.module = '';
+    this.version = 'All';
+    this.category = 'All';
+    this.module = 'All';
     this.results = [];
     this.hasSearched = false;
     this.suggestions = [];
