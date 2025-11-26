@@ -1,0 +1,90 @@
+/* ========== Floating Button (abre el widget) ========== */
+.floating-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #0f62fe;
+  border: none;
+  color: white;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  transition: 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-btn:hover {
+  transform: scale(1.1);
+}
+
+/* ========== Panel del widget ========== */
+.ai-panel {
+  position: fixed;
+  bottom: 90px;
+  right: 25px;
+  width: 420px;
+
+  /* 🔥 Nunca más grande que la pantalla */
+  max-height: calc(100vh - 140px);
+
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.25s ease;
+  overflow: hidden; /* el scroll lo maneja el chat interno */
+}
+
+/* Botón de cerrar del widget (el de la esquina) */
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+  align-self: flex-end;
+}
+
+/* Título del panel (si lo tienes aquí, si no, no pasa nada) */
+.title {
+  text-align: center;
+  color: #0f62fe;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 5px 0 15px;
+}
+
+/* Hace que el componente de chat llene el panel */
+.ai-panel app-ai-chat {
+  flex: 1;
+  display: block;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 480px) {
+  .ai-panel {
+    width: 92vw;
+    right: 4vw;
+    bottom: 90px;
+    max-height: calc(100vh - 120px);
+  }
+}
+
+/* ========== Animación ========== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

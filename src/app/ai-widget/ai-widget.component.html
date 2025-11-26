@@ -1,0 +1,11 @@
+<!-- Floating Button -->
+<button class="floating-btn" (click)="toggle()">
+  💬
+</button>
+
+<!-- Widget Panel -->
+<div class="ai-panel" *ngIf="isOpen">
+  <button class="close-btn" (click)="toggle()">✖</button>
+
+  <app-ai-chat></app-ai-chat>
+</div>

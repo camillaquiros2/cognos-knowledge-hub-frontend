@@ -1,0 +1,32 @@
+<div class="chat-container">
+
+  <!-- Título -->
+  <h2 class="title">AI Assistant</h2>
+
+  <!-- Caja de mensajes -->
+  <div class="messages-box">
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [ngClass]="msg.sender"
+    >
+      {{ msg.text }}
+    </div>
+
+    <div class="message bot loading" *ngIf="loading">
+      ⏳ Thinking...
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <input
+      type="text"
+      placeholder="Escribe tu pregunta..."
+      [(ngModel)]="userMessage"
+      (keyup.enter)="sendMessage()"
+    />
+
+    <button class="send-btn" (click)="sendMessage()">Send</button>
+  </div>
+</div>
